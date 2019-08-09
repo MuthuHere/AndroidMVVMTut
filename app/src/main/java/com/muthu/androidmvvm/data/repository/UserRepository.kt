@@ -1,36 +1,18 @@
 package com.muthu.androidmvvm.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.muthu.androidmvvm.data.network.MyApi
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.muthu.androidmvvm.data.network.SafeApiResponse
+import com.muthu.androidmvvm.data.network.model.AuthResponse
 
-class UserRepository {
+class UserRepository :SafeApiResponse(){
 
 
-    fun userLogin(email: String, password: String): LiveData<String> {
-        val loginResponse = MutableLiveData<String>()
-        MyApi().userLogin(email, password).enqueue(object : Callback<ResponseBody> {
+    suspend fun userLogin(email: String, password: String): AuthResponse {
+        return apiRequest{
+            MyApi().userLogin(email, password)
+        }
 
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-
-                if (response.isSuccessful) {
-                    loginResponse.value = response.body()?.string()
-                } else {
-                    response.errorBody()?.string()
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-
-                loginResponse.value = t.message
-            }
-
-        })
-
-        return loginResponse
     }
+
+
 }

@@ -1,9 +1,9 @@
 package com.muthu.androidmvvm.ui.appinterface
 
-import androidx.lifecycle.LiveData
+import com.muthu.androidmvvm.data.db.entities.User
 
 interface AuthInterface {
     fun onStarted()
-    fun onSuccess(message: LiveData<String>)
+    fun onSuccess(message: User?)
     fun onFailed(message: String)
 }

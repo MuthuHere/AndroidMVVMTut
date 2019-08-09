@@ -4,6 +4,7 @@ import android.view.View
 import androidx.lifecycle.ViewModel
 import com.muthu.androidmvvm.data.repository.UserRepository
 import com.muthu.androidmvvm.ui.appinterface.AuthInterface
+import com.muthu.androidmvvm.util.Coroutines
 
 class AuthViewModel : ViewModel() {
 
@@ -22,7 +23,21 @@ class AuthViewModel : ViewModel() {
             return
         }
         authListener?.onStarted()
-        val response = UserRepository().userLogin(email!!, password!!)
-        authListener?.onSuccess(response)
+
+        Coroutines.main {
+            try {
+                val authResponse = UserRepository().userLogin(email!!, password!!)
+                authResponse.user?.let {
+                    authListener?.onSuccess(it)
+                    return@main
+                }
+                authListener?.onFailed(authResponse.message!!)
+            } catch (e: Exception) {
+                authListener?.onFailed(e.message!!)
+            }
+
+
+        }
+
     }
 }
