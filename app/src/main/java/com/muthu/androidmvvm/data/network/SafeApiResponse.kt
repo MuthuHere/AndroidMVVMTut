@@ -7,7 +7,7 @@ import retrofit2.Response
 
 abstract class SafeApiResponse {
 
-  public  suspend fun <T : Any> apiRequest(call: suspend () -> Response<T>): T {
+    suspend fun <T : Any> apiRequest(call: suspend () -> Response<T>): T {
         val response = call.invoke()
 
         if (response.isSuccessful) {

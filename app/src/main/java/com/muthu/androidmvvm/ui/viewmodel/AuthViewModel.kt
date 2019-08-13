@@ -5,8 +5,11 @@ import androidx.lifecycle.ViewModel
 import com.muthu.androidmvvm.data.repository.UserRepository
 import com.muthu.androidmvvm.ui.appinterface.AuthInterface
 import com.muthu.androidmvvm.util.Coroutines
+import com.muthu.androidmvvm.util.NoInternetExceptions
 
-class AuthViewModel : ViewModel() {
+class AuthViewModel(
+    private val userRepository: UserRepository
+) : ViewModel() {
 
 
     var email: String? = null
@@ -26,13 +29,16 @@ class AuthViewModel : ViewModel() {
 
         Coroutines.main {
             try {
-                val authResponse = UserRepository().userLogin(email!!, password!!)
+                val authResponse = userRepository.userLogin(email!!, password!!)
                 authResponse.user?.let {
                     authListener?.onSuccess(it)
+                    userRepository.insertIntoDb(it)
+
                     return@main
                 }
                 authListener?.onFailed(authResponse.message!!)
-            } catch (e: Exception) {
+            } catch (e: NoInternetExceptions) {
+
                 authListener?.onFailed(e.message!!)
             }
 
@@ -40,4 +46,6 @@ class AuthViewModel : ViewModel() {
         }
 
     }
+
+    fun getUserData() = userRepository.getUser()
 }

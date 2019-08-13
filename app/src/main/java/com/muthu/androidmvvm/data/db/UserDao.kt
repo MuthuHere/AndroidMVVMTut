@@ -12,8 +12,8 @@ import com.muthu.androidmvvm.data.db.entities.User
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(user: User): Long
+    suspend fun insert(user: User): Long
 
     @Query("SELECT * FROM User WHERE uid = $CURRENT_USER_ID")
-    fun getUser(): LiveData<User>
+     fun getUser(): LiveData<User>
 }

@@ -1,6 +1,7 @@
 package com.muthu.androidmvvm.data.network
 
 import com.muthu.androidmvvm.data.network.model.AuthResponse
+import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -17,12 +18,29 @@ interface MyApi {
         @Field("password") password: String
     ): Response<AuthResponse>
 
+    @FormUrlEncoded
+    @POST("signup")
+    suspend fun userSignUp(
+        @Field("email") email: String,
+        @Field("password") password: String,
+        @Field("name") name: String
+    ): Response<AuthResponse>
+
 
     companion object {
-        operator fun invoke(): MyApi {
+        operator fun invoke(
+            networkInterceptor: NetworkInterceptor
+        ): MyApi {
+
+            val client = OkHttpClient.Builder()
+                .addInterceptor(networkInterceptor)
+                .build()
+
+
             return Retrofit.Builder()
                 .baseUrl("https://api.simplifiedcoding.in/course-apis/mvvm/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
                 .build()
                 .create(MyApi::class.java)
         }
