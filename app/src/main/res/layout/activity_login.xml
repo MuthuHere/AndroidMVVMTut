@@ -68,6 +68,7 @@
                     android:layout_height="wrap_content"
                     android:text="Sign Up here"
                     android:gravity="center"
+                    android:onClick="@{viewModel.onSingUp}"
                     android:layout_below="@+id/btnSubmit"/>
 
 

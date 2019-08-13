@@ -7,11 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.muthu.androidmvvm.R
-import com.muthu.androidmvvm.data.db.AppDatabse
 import com.muthu.androidmvvm.data.db.entities.User
-import com.muthu.androidmvvm.data.network.MyApi
-import com.muthu.androidmvvm.data.network.NetworkInterceptor
-import com.muthu.androidmvvm.data.repository.UserRepository
 import com.muthu.androidmvvm.databinding.ActivityLoginBinding
 import com.muthu.androidmvvm.ui.appinterface.AuthInterface
 import com.muthu.androidmvvm.ui.home.HomeActivity
